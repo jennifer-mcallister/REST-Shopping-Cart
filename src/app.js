@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require("mongoose");
-// const reviewRoutes = require("./routes/reviewRoutes");
+const catRoutes = require("./routes/catRoutes");
+const path = require('path');
 
 
 // Create server
@@ -16,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 // Create Routes
-// app.use("/api/v1/users", userRoutes);
+app.use("/mycats", catRoutes);
 
 
 // Start Server

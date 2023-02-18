@@ -5,5 +5,8 @@ exports.getCatById = async (req, res, next) => {
 }
 
 exports.getAllCats = async (req, res, next) => {
-    return res.send("cats");
+    const cats = await Cat.find();
+    console.log("trying to get cats");
+    return res.json(cats);
+
 }
