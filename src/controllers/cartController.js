@@ -1,7 +1,12 @@
 const Cart = require('../models/Cart');
 
 exports.getCartById = async (req, res, next) => {
-    return res.send("your cart");
+    console.log("trying to get shopping cart by id");
+    const cartId = req.params.id;
+    const cart = await Cart.findById(cartId);
+    if(!cart) throw new NotFoundError('That shopping cart does not exist');
+    console.log(cart);
+    return res.json(cart);
 }
 
 exports.createCart = async (req, res, next) => {
