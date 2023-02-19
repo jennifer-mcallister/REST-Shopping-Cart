@@ -10,15 +10,21 @@ exports.getCartById = async (req, res, next) => {
 }
 
 exports.createCart = async (req, res, next) => {
-    return res.send("new cart");
-}
-
-exports.deleteCart = async (req, res, next) => {
-    return res.send("your cart is removed");
+    const newCart = await Cart.create({
+        totalPrice: 0,
+        quantity: 0,
+        productsInShoppingCart: [],
+    });
+    console.log(newCart);
+    return res.setHeader('Location', `/api/mycats/carts/${newCart._id.toString()}`).json(newCart);
 }
 
 exports.addCatToCart = async (req, res, next) => {
     return res.send(" new cat is in your cart");
+}
+
+exports.deleteCart = async (req, res, next) => {
+    return res.send("your cart is removed");
 }
 
 exports.removeCatInCart = async (req, res, next) => {
