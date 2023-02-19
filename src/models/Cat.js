@@ -17,4 +17,4 @@ const CatSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Cat', CatSchema)
+module.exports = mongoose.model('Cat', CatSchema, 'cats')

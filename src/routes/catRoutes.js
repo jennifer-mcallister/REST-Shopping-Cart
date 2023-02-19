@@ -5,6 +5,6 @@ const {
     getAllCats
 } = require('../controllers/catController');
 
-router.get("/cats", getAllCats);
+router.get("/", getAllCats);
 
 module.exports = router;
