@@ -1,4 +1,5 @@
 const Cart = require('../models/Cart');
+const { NotFoundError } = require('../utils/error');
 
 exports.getCartById = async (req, res, next) => {
     console.log("trying to get shopping cart by id");
@@ -24,7 +25,11 @@ exports.addCatToCart = async (req, res, next) => {
 }
 
 exports.deleteCart = async (req, res, next) => {
-    return res.send("your cart is removed");
+    const cartId = req.params.id;
+    const deleteCart = await Cart.findById(cartId);
+    if(!deleteCart) throw new NotFoundError('That shopping cart does not exist');
+    await deleteCart.delete();
+    return res.sendStatus(204);
 }
 
 exports.removeCatInCart = async (req, res, next) => {
