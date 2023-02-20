@@ -35,6 +35,7 @@ exports.addCatToCart = async (req, res, next) => {
         articleNumber: cat.articleNumber,
         productName: cat.productName,
         productPrice: cat.productPrice,
+        _id: cat._id,
     };
     cartInventory.push(newCat);
 
@@ -75,8 +76,8 @@ exports.removeCatInCart = async (req, res, next) => {
     cartInventory.splice(foundCat, 1);
 
 
-    cart.totalPrice -= cat.productPrice;
-    cart.quantity -= 1;
+    cart.totalPrice = cart.totalPrice - cat.productPrice;
+    cart.quantity = cart.quantity - 1;
 
     const updateCart = await cart.save();
     return res.json(updateCart);
