@@ -26,8 +26,7 @@ exports.addCatToCart = async (req, res, next) => {
     const cart = await Cart.findById(cartId);
     if(!cart) throw new NotFoundError('That cart does not exist');
 
-    const catId = req.body.catId;
-    console.log(catId)
+    const catId = req.body._id;
     const cat = await Cat.findById(catId);
     if(!cat) throw new NotFoundError('That cat does not exist');
 
@@ -55,7 +54,32 @@ exports.deleteCart = async (req, res, next) => {
 }
 
 exports.removeCatInCart = async (req, res, next) => {
-    return res.send("cat has left your cart");
+    console.log("trying to delete cat")
+    const cartId = req.params.id;
+    const cart = await Cart.findById(cartId);
+    if(!cart) throw new NotFoundError('That cart does not exist');
+    console.log(cart.totalPrice)
+
+    const catId = req.body._id;
+    console.log(catId)
+    const cat = await Cat.findById(catId);
+    if(!cat) throw new NotFoundError('That cat does not exist');
+
+    const cartInventory = cart.productsInShoppingCart;
+    console.log(cartInventory)
+
+    const foundCat = cartInventory.findIndex((cat) => cat._id == catId);
+    console.log(foundCat)
+    console.log(cat)
+
+    cartInventory.splice(foundCat, 1);
+
+
+    cart.totalPrice -= cat.productPrice;
+    cart.quantity -= 1;
+
+    const updateCart = await cart.save();
+    return res.json(updateCart);
 }
 
 

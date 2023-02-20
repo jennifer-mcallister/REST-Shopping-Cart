@@ -11,7 +11,8 @@ const {
 
 router.get('/:id', getCartById);
 router.post('/', createCart);
-router.put('/:id', addCatToCart);
-router.delete('/:id', deleteCart, removeCatInCart);
+router.post('/:id', addCatToCart);
+router.put('/:id', removeCatInCart)
+router.delete('/:id', deleteCart);
 
 module.exports = router;
