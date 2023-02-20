@@ -7,7 +7,7 @@ exports.getCatById = async (req, res, next) => {
     const cat = await Cat.findById(catId);
     if(!cat) throw new NotFoundError('That cat does not exist in our store');
     console.log(cat);
-    return res.json(cat);
+    return res.status(200).json(cat);
 }
 
 exports.getAllCats = async (req, res, next) => {

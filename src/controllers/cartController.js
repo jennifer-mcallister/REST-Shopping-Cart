@@ -3,12 +3,10 @@ const Cat = require('../models/Cat');
 const { NotFoundError } = require('../utils/error');
 
 exports.getCartById = async (req, res, next) => {
-    console.log("trying to get shopping cart by id");
     const cartId = req.params.id;
     const cart = await Cart.findById(cartId);
     if(!cart) throw new NotFoundError('That shopping cart does not exist');
-    console.log(cart);
-    return res.json(cart);
+    return res.status(200).json(cart);
 }
 
 exports.createCart = async (req, res, next) => {
@@ -17,8 +15,7 @@ exports.createCart = async (req, res, next) => {
         quantity: 0,
         productsInShoppingCart: [],
     });
-    console.log(newCart);
-    return res.setHeader('Location', `/api/mycats/carts/${newCart._id.toString()}`).json(newCart);
+    return res.setHeader('Location', `/api/mycats/carts/${newCart._id.toString()}`).status(201).json(newCart);
 }
 
 exports.addCatToCart = async (req, res, next) => {
@@ -51,7 +48,7 @@ exports.addCatToCart = async (req, res, next) => {
     cart.quantity += 1;
 
     const updateCart = await cart.save();
-    return res.json(updateCart);
+    return res.status(201).json(updateCart);
 }
 
 exports.deleteCart = async (req, res, next) => {
@@ -77,18 +74,23 @@ exports.removeCatInCart = async (req, res, next) => {
     const cartInventory = cart.productsInShoppingCart;
     console.log(cartInventory)
 
-    const foundCat = cartInventory.findIndex((cat) => cat._id == catId);
-    console.log(foundCat)
-    console.log(cat)
+    const foundCatIndex = cartInventory.findIndex((cat) => cat._id == catId);
 
-    cartInventory.splice(foundCat, 1);
+    const foundCat = cartInventory.find((cat) => cat._id == catId);
+    if(!foundCat) throw new NotFoundError('That cat is not in shoppingcart');
+    if(foundCat && (foundCat.productQuantity >= 2)) {
+        foundCat.productQuantity = foundCat.productQuantity - 1;
+    } else {
+        cartInventory.splice(foundCatIndex, 1);
+    }
 
-
-    cart.totalPrice = cart.totalPrice - cat.productPrice;
-    cart.quantity = cart.quantity - 1;
+    if(cart.quantity >= 1){
+        cart.totalPrice = cart.totalPrice - cat.productPrice;
+        cart.quantity = cart.quantity - 1;
+    }
 
     const updateCart = await cart.save();
-    return res.json(updateCart);
+    return res.status(202).json(updateCart);
 }
 
 
