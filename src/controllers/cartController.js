@@ -31,13 +31,21 @@ exports.addCatToCart = async (req, res, next) => {
     if(!cat) throw new NotFoundError('That cat does not exist');
 
     const cartInventory = cart.productsInShoppingCart;
+
     const newCat =  {
         articleNumber: cat.articleNumber,
         productName: cat.productName,
         productPrice: cat.productPrice,
+        productQuantity: 1,
         _id: cat._id,
     };
-    cartInventory.push(newCat);
+
+    const foundCat = cartInventory.find((cat) => cat._id == catId);
+    if(foundCat) {
+        foundCat.productQuantity += 1;
+    } else {
+        cartInventory.push(newCat);
+    }
 
     cart.totalPrice += newCat.productPrice;
     cart.quantity += 1;

@@ -14,6 +14,10 @@ const CatSchema = new mongoose.Schema({
     productPrice: {
         type: Number,
         required: true,
+    },
+    productQuantity: {
+        type: Number,
+        required: true,
     }
 })
 
