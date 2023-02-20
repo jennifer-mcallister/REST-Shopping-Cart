@@ -27,14 +27,13 @@ exports.addCatToCart = async (req, res, next) => {
     if(!cart) throw new NotFoundError('That cart does not exist');
 
     const catId = req.body.catId;
-    console.log(req.body)
     console.log(catId)
     const cat = await Cat.findById(catId);
     if(!cat) throw new NotFoundError('That cat does not exist');
 
     const cartInventory = cart.productsInShoppingCart;
     const newCat =  {
-        articleNumer: cat.articleNumber,
+        articleNumber: cat.articleNumber,
         productName: cat.productName,
         productPrice: cat.productPrice,
     };
