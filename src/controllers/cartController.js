@@ -1,4 +1,5 @@
 const Cart = require('../models/Cart');
+const Cat = require('../models/Cat');
 const { NotFoundError } = require('../utils/error');
 
 exports.getCartById = async (req, res, next) => {
@@ -21,7 +22,29 @@ exports.createCart = async (req, res, next) => {
 }
 
 exports.addCatToCart = async (req, res, next) => {
-    return res.send(" new cat is in your cart");
+    const cartId = req.params.id;
+    const cart = await Cart.findById(cartId);
+    if(!cart) throw new NotFoundError('That cart does not exist');
+
+    const catId = req.body.catId;
+    console.log(req.body)
+    console.log(catId)
+    const cat = await Cat.findById(catId);
+    if(!cat) throw new NotFoundError('That cat does not exist');
+
+    const cartInventory = cart.productsInShoppingCart;
+    const newCat =  {
+        articleNumer: cat.articleNumber,
+        productName: cat.productName,
+        productPrice: cat.productPrice,
+    };
+    cartInventory.push(newCat);
+
+    cart.totalPrice += newCat.productPrice;
+    cart.quantity += 1;
+
+    const updateCart = await cart.save();
+    return res.json(updateCart);
 }
 
 exports.deleteCart = async (req, res, next) => {
