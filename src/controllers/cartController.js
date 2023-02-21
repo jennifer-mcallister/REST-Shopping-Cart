@@ -60,20 +60,15 @@ exports.deleteCart = async (req, res, next) => {
 }
 
 exports.removeCatInCart = async (req, res, next) => {
-    console.log("trying to delete cat")
     const cartId = req.params.id;
     const cart = await Cart.findById(cartId);
     if(!cart) throw new NotFoundError('That cart does not exist');
-    console.log(cart.totalPrice)
 
     const catId = req.body._id;
-    console.log(catId)
     const cat = await Cat.findById(catId);
     if(!cat) throw new NotFoundError('That cat does not exist');
 
     const cartInventory = cart.productsInShoppingCart;
-    console.log(cartInventory)
-
     const foundCatIndex = cartInventory.findIndex((cat) => cat._id == catId);
 
     const foundCat = cartInventory.find((cat) => cat._id == catId);
