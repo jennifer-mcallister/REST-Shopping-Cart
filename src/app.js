@@ -16,8 +16,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/mycats/carts', cartRoutes)
-app.use('/api/mycats/cats', catRoutes);
+app.use('/api/v1/mycats/carts', cartRoutes);
+app.use('/api/v1/mycats/cats', catRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

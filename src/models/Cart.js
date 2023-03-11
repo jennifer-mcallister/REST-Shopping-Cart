@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const CatSchema = new mongoose.Schema({
+    catId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cat",
+      },
     articleNumber: {
         type: Number,
         unique: true,

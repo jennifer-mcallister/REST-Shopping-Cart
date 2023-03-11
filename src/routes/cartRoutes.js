@@ -9,10 +9,10 @@ const {
     removeCatInCart,
 } = require('../controllers/cartController');
 
-router.get('/:id', getCartById);
+router.get('/:cartId', getCartById);
 router.post('/', createCart);
-router.post('/:id', addCatToCart);
-router.put('/:id', removeCatInCart)
-router.delete('/:id', deleteCart);
+router.put('/:cartId', addCatToCart);
+router.post('/:cartId', removeCatInCart)
+router.delete('/:cartId', deleteCart);
 
 module.exports = router;
